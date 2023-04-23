@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using Aspose.Cells;
+using PairwiseRegressionAnalysis.Reader;
 using MathNet.Numerics.Statistics;
 
 namespace PairwiseRegressionAnalysis
@@ -13,54 +13,6 @@ namespace PairwiseRegressionAnalysis
         public Form()
         {
             InitializeComponent();
-        }
-
-        private static List<object> GetColumn(Cells elements, int column_index)
-        {
-            List<object> elements_column = new List<object>();
-
-            int row_amount = elements.MaxDataRow;
-            for (int row_index = 0; row_index <= row_amount; row_index++) elements_column.Add(elements[row_index, column_index].Value);
-
-            return elements_column;
-        }
-        private static List<string> TitlesReader(Worksheet worksheet, out int last_row_index)
-        {
-            List<string> title = new List<string>();
-
-            last_row_index = 0;
-            int column_amount = worksheet.Cells.MaxDataColumn;
-            for (int column_index = 0; column_index <= column_amount; column_index++)
-            {
-                int row_index = GetColumn(worksheet.Cells, column_index).FindIndex((element) => element != null);
-
-                if (last_row_index < row_index) last_row_index = row_index;
-            }
-            for (int column_index = 0; column_index <= column_amount; column_index++)
-            {
-                int row_index = GetColumn(worksheet.Cells, column_index).GetRange(0, last_row_index + 1).FindLastIndex((element) => element != null);
-                title.Add(worksheet.Cells[row_index, column_index].Value.ToString());
-            }
-
-            return title;
-        }
-        private static Dictionary<string, List<object>> XlsxReader(Worksheet worksheet) //GetColumnValues
-        {
-            Dictionary<string, List<object>> result = new Dictionary<string, List<object>>();
-            List<string> title_name = new List<string>();
-            title_name = TitlesReader(worksheet, out int last_titles_row_index);
-
-            int row_amount = worksheet.Cells.MaxDataRow;
-            int column_amount = worksheet.Cells.MaxDataColumn;
-            for (int column_index = 0; column_index <= column_amount; column_index++)
-            {
-                int column_range_count = row_amount - last_titles_row_index - 1;
-                var values = GetColumn(worksheet.Cells, column_index).GetRange(last_titles_row_index + 1, column_range_count);
-                //values.RemoveAll(element => element == null);
-                result.Add(title_name[column_index], values);
-            }
-
-            return result;
         }
 
         private void DrawCorrelationField(List<Point> points)
@@ -89,8 +41,8 @@ namespace PairwiseRegressionAnalysis
             Workbook wb = new Workbook("xlsx/2021.xlsx");
             WorksheetCollection collection = wb.Worksheets;
             Worksheet worksheet = collection[0];
-
-            var data = XlsxReader(worksheet);
+            XlsxReader xlsxReader = new XlsxReader(worksheet.Cells);
+            var data = xlsxReader.GetColumnValues();
             data.Remove(data.First().Key);
             foreach (var keyValue in data)
             {

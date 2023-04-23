@@ -12,6 +12,7 @@ namespace PairwiseRegressionAnalysis.Reader
         {
             this.cells = cells;
         }
+
         public override List<object> GetColumn(int column_index)
         {
             List<object> cells_column = new List<object>();
@@ -51,6 +52,23 @@ namespace PairwiseRegressionAnalysis.Reader
             }
 
             return title_column;
+        }
+
+        public override Dictionary<string, List<object>> GetColumnValues() 
+        {
+            Dictionary<string, List<object>> result = new Dictionary<string, List<object>>();
+            List<string> title_name = TitlesColumn(out int last_titles_row_index);
+
+            int row_amount = cells.MaxDataRow;
+            int column_amount = cells.MaxDataColumn;
+            for (int column_index = 0; column_index <= column_amount; column_index++)
+            {
+                int column_range_count = row_amount - last_titles_row_index - 1;
+                var values = GetColumn(column_index).GetRange(last_titles_row_index + 1, column_range_count);
+                result.Add(title_name[column_index], values);
+            }
+
+            return result;
         }
     }
 }

@@ -18,5 +18,6 @@ namespace PairwiseRegressionAnalysis.Reader
 
         public abstract List<string> TitlesColumn(out int last_row_index);
 
+        public abstract Dictionary<string, List<object>> GetColumnValues();
     }
 }
