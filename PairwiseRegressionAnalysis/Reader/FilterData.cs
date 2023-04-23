@@ -8,5 +8,13 @@ namespace PairwiseRegressionAnalysis.Reader
 {
     internal class FilterData
     {
+        public Dictionary<string, List<object>> EmptyDatatoReplace(Dictionary<string, List<object>> titleColumnValues) {
+            foreach (var item in titleColumnValues) 
+            {
+                titleColumnValues[item.Key].ForEach();
+            }
+
+            return titleColumnValues;
+        }
     }
 }

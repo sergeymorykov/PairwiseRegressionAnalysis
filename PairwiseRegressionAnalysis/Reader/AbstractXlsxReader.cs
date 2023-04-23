@@ -12,12 +12,12 @@ namespace PairwiseRegressionAnalysis.Reader
             this.cells = cells;
         }
 
-        public abstract List<object> GetColumn(int column_index);
+        public abstract List<string> GetColumn(int column_index);
 
-        public abstract List<object> GetRow(int row_index);
+        public abstract List<string> GetRow(int row_index);
 
-        public abstract List<string> TitlesColumn(out int last_row_index);
+        public abstract List<string> GetTitlesColumn(out int last_row_index);
 
-        public abstract Dictionary<string, List<object>> GetColumnValues();
+        public abstract Dictionary<string, List<string>> GetColumnValues();
     }
 }

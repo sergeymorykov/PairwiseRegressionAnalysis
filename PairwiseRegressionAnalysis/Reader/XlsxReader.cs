@@ -13,51 +13,50 @@ namespace PairwiseRegressionAnalysis.Reader
             this.cells = cells;
         }
 
-        public override List<object> GetColumn(int column_index)
+        public override List<string> GetColumn(int column_index)
         {
-            List<object> cells_column = new List<object>();
+            var result = new List<string>();
 
             int row_amount = cells.MaxDataRow;
-            for (int row_index = 0; row_index <= row_amount; row_index++) cells_column.Add(cells[row_index, column_index].Value);
+            for (int row_index = 0; row_index <= row_amount; row_index++) result.Add(cells[row_index, column_index].Value.ToString());
 
-            return cells_column;
+            return result;
         }
 
-        public override List<object> GetRow(int row_index)
+        public override List<string> GetRow(int row_index)
         {
-            List<object> cells_row = new List<object>();
+            var result = new List<string>();
 
             int column_amount = cells.MaxDataColumn;
-            for (int column_index = 0; column_index <= column_amount; column_index++) cells_row.Add(cells[row_index, row_index].Value);
+            for (int column_index = 0; column_index <= column_amount; column_index++) result.Add(cells[row_index, column_index].Value.ToString());
 
-            return cells_row;
+            return result;
         }
 
-        public override List<string> TitlesColumn(out int last_row_index) 
+        public override List<string> GetTitlesColumn(out int last_row_index) 
         {
-            List<string> title_column = new List<string>();
+            var result = new List<string>();
 
             last_row_index = 0;
             int column_amount = cells.MaxDataColumn;
             for (int column_index = 0; column_index <= column_amount; column_index++)
             {
                 int row_index = GetColumn(column_index).FindIndex((element) => element != null);
-
                 if (last_row_index < row_index) last_row_index = row_index;
             }
             for (int column_index = 0; column_index <= column_amount; column_index++)
             {
                 int row_index = GetColumn(column_index).GetRange(0, last_row_index + 1).FindLastIndex((element) => element != null);
-                title_column.Add(cells[row_index, column_index].Value.ToString());
+                result.Add(cells[row_index, column_index].Value.ToString());
             }
 
-            return title_column;
+            return result;
         }
 
-        public override Dictionary<string, List<object>> GetColumnValues() 
+        public override Dictionary<string, List<string>> GetColumnValues() 
         {
-            Dictionary<string, List<object>> result = new Dictionary<string, List<object>>();
-            List<string> title_name = TitlesColumn(out int last_titles_row_index);
+            var result = new Dictionary<string, List<string>>();
+            List<string> title_name = GetTitlesColumn(out int last_titles_row_index);
 
             int row_amount = cells.MaxDataRow;
             int column_amount = cells.MaxDataColumn;
