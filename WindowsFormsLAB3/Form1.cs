@@ -44,9 +44,9 @@ namespace PairwiseRegressionAnalysis
                 
             return title;
         }
-        private static Dictionary<string, List<object>> XlsxReader(Worksheet worksheet)
+        private static Dictionary<string, List<object>> XlsxReader(Worksheet worksheet) //GetColumnValues
         {
-            Dictionary<string, List<object>> titleValues = new Dictionary<string, List<object>>();
+            Dictionary<string, List<object>> result = new Dictionary<string, List<object>>();
             List<string> title_name = new List<string>();
             title_name = TitlesReader(worksheet, out int last_titles_row_index);
 
@@ -57,10 +57,10 @@ namespace PairwiseRegressionAnalysis
                 int column_range_count = row_amount - last_titles_row_index - 1;
                 var values = GetColumn(worksheet.Cells, column_index).GetRange(last_titles_row_index + 1, column_range_count);
                 //values.RemoveAll(element => element == null);
-                titleValues.Add(title_name[column_index], values);
+                result.Add(title_name[column_index], values);
             }
 
-            return titleValues;
+            return result;
         }
 
         private void DrawCorrelationField(List<Point> points) {
