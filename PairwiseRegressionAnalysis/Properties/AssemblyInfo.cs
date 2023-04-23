@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
-[assembly: AssemblyTitle("WindowsFormsLAB3")]
+[assembly: AssemblyTitle("PairwiseRegressionAnalysis")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WindowsFormsLAB3")]
+[assembly: AssemblyProduct("PairwiseRegressionAnalysis")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("41ffa275-f33b-42d3-905b-7c6ed6fe6532")]
+[assembly: Guid("e5e2270a-c370-4092-9895-67d07f2eb870")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //

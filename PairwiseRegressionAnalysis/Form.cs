@@ -8,9 +8,9 @@ using MathNet.Numerics.Statistics;
 
 namespace PairwiseRegressionAnalysis
 {
-    public partial class Form1 : Form
+    public partial class Form : System.Windows.Forms.Form
     {
-        public Form1()
+        public Form()
         {
             InitializeComponent();
         }
@@ -33,15 +33,15 @@ namespace PairwiseRegressionAnalysis
             for (int column_index = 0; column_index <= column_amount; column_index++)
             {
                 int row_index = GetColumn(worksheet.Cells, column_index).FindIndex((element) => element != null);
-                
+
                 if (last_row_index < row_index) last_row_index = row_index;
             }
             for (int column_index = 0; column_index <= column_amount; column_index++)
             {
-                int row_index = GetColumn(worksheet.Cells, column_index).GetRange(0,last_row_index+1).FindLastIndex((element) => element != null);
+                int row_index = GetColumn(worksheet.Cells, column_index).GetRange(0, last_row_index + 1).FindLastIndex((element) => element != null);
                 title.Add(worksheet.Cells[row_index, column_index].Value.ToString());
             }
-                
+
             return title;
         }
         private static Dictionary<string, List<object>> XlsxReader(Worksheet worksheet) //GetColumnValues
@@ -63,10 +63,11 @@ namespace PairwiseRegressionAnalysis
             return result;
         }
 
-        private void DrawCorrelationField(List<Point> points) {
+        private void DrawCorrelationField(List<Point> points)
+        {
             chart_regression.Series["SeriesCorrelationField"].Points.Clear();
             chart_regression.Series["SeriesCorrelationField"].LegendText = "Поле корреляции";
-            foreach (var point in points) 
+            foreach (var point in points)
             {
                 chart_regression.Series["SeriesCorrelationField"].Points.AddXY(point);
             }
@@ -79,12 +80,12 @@ namespace PairwiseRegressionAnalysis
             if (element == null) return null;
             else if (Double.TryParse(element.ToString(), out value)) return value;
             throw new Exception("Cannot implicitly convert type 'object' to 'double?'");
-        }        
+        }
 
         private Dictionary<string, List<double?>> district_data = new Dictionary<string, List<double?>>();
 
         private void Form1_Load(object sender, EventArgs e)
-        {            
+        {
             Workbook wb = new Workbook("xlsx/2021.xlsx");
             WorksheetCollection collection = wb.Worksheets;
             Worksheet worksheet = collection[0];
@@ -118,13 +119,13 @@ namespace PairwiseRegressionAnalysis
         private Item<int> selectItem_comboBoxY;
         private void comboBoxX_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(selectItem_comboBoxX != null) comboBoxY.Items.Insert(selectItem_comboBoxX.id, selectItem_comboBoxX.name_item);
+            if (selectItem_comboBoxX != null) comboBoxY.Items.Insert(selectItem_comboBoxX.id, selectItem_comboBoxX.name_item);
             comboBoxY.Items.Remove(comboBoxX.SelectedItem);
-            selectItem_comboBoxX = new Item<int>(comboBoxX.SelectedIndex,comboBoxX.SelectedItem.ToString());
+            selectItem_comboBoxX = new Item<int>(comboBoxX.SelectedIndex, comboBoxX.SelectedItem.ToString());
         }
         private void comboBoxY_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (selectItem_comboBoxY != null) comboBoxX.Items.Insert(selectItem_comboBoxY.id,selectItem_comboBoxY.name_item);
+            if (selectItem_comboBoxY != null) comboBoxX.Items.Insert(selectItem_comboBoxY.id, selectItem_comboBoxY.name_item);
             comboBoxX.Items.Remove(comboBoxY.SelectedItem);
             selectItem_comboBoxY = new Item<int>(comboBoxY.SelectedIndex, comboBoxY.SelectedItem.ToString());
         }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowsFormsLAB3.Properties
+namespace PairwiseRegressionAnalysis.Properties
 {
 
 
