@@ -1,6 +1,13 @@
-﻿namespace PairwiseRegressionAnalysis.reader
+﻿using Aspose.Cells;
+using System.Collections.Generic;
+
+namespace PairwiseRegressionAnalysis.reader
 {
-    internal class XlsxReader
+    abstract class XlsxReader
     {
+
+        XlsxReader(Worksheet worksheet) {
+            
+        }
     }
 }
