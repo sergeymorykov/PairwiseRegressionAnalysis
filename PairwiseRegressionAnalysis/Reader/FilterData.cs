@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PairwiseRegressionAnalysis.Reader
 {
-    internal class FilterData
+    internal static class FilterData
     {
-        public Dictionary<string, List<object>> EmptyDatatoReplace(Dictionary<string, List<object>> titleColumnValues) {
+        public static Dictionary<string, List<string>> EmptyDatatoNullable(Dictionary<string, List<string>> titleColumnValues) {
+            var result = new Dictionary<string, IEnumerable<string>>();
             foreach (var item in titleColumnValues) 
             {
-                titleColumnValues[item.Key].ForEach();
+                result[item.Key] = titleColumnValues[item.Key].Select(element => element == "-" ? null : element);
             }
-
-            return titleColumnValues;
+            return result.ToDictionary(e => e.Key, e => e.Value.ToList());
         }
+
+
     }
 }

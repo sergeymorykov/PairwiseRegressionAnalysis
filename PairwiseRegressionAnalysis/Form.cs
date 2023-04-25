@@ -42,7 +42,7 @@ namespace PairwiseRegressionAnalysis
             WorksheetCollection collection = wb.Worksheets;
             Worksheet worksheet = collection[0];
             XlsxReader xlsxReader = new XlsxReader(worksheet.Cells);
-            var data = xlsxReader.GetColumnValues();
+            var data = FilterData.EmptyDatatoNullable(xlsxReader.GetColumnValues());
             data.Remove(data.First().Key);
             foreach (var keyValue in data)
             {

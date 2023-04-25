@@ -18,7 +18,9 @@ namespace PairwiseRegressionAnalysis.Reader
             var result = new List<string>();
 
             int row_amount = cells.MaxDataRow;
-            for (int row_index = 0; row_index <= row_amount; row_index++) result.Add(cells[row_index, column_index].Value.ToString());
+            for (int row_index = 0; row_index <= row_amount; row_index++) {
+                result.Add(cells[row_index, column_index].Value?.ToString());
+            }
 
             return result;
         }
@@ -28,7 +30,7 @@ namespace PairwiseRegressionAnalysis.Reader
             var result = new List<string>();
 
             int column_amount = cells.MaxDataColumn;
-            for (int column_index = 0; column_index <= column_amount; column_index++) result.Add(cells[row_index, column_index].Value.ToString());
+            for (int column_index = 0; column_index <= column_amount; column_index++) result.Add(cells[row_index, column_index].Value?.ToString());
 
             return result;
         }
