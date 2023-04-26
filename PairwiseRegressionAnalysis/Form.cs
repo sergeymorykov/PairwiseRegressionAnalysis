@@ -60,18 +60,11 @@ namespace PairwiseRegressionAnalysis
 
         private void buttonPlot_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var first_elements_pair = district_data[comboBoxX.SelectedItem.ToString()];
-                var second_elements_pair = district_data[(comboBoxY.SelectedItem.ToString())];
-                var regression_point = new RegressionPairs(first_elements_pair, second_elements_pair);
-                var regression_pairs = FilterPair.DeleteAnomalPairs(regression_point.regression_pairs);
-                DrawCorrelationField(regression_pairs);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            var first_elements_pair = district_data[comboBoxX.SelectedItem.ToString()];
+            var second_elements_pair = district_data[comboBoxY.SelectedItem.ToString()];
+            var regression_point = new RegressionPairs(first_elements_pair, second_elements_pair);
+            var regression_pairs = FilterPair.DeleteAnomalPairs(regression_point.regression_pairs);
+            DrawCorrelationField(regression_pairs);
         }
     }
 
