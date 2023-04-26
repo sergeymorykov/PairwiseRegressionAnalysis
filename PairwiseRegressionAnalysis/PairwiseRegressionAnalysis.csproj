@@ -54,6 +54,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Form.cs">
@@ -68,6 +69,8 @@
     <Compile Include="Reader\AbstractXlsxReader.cs" />
     <Compile Include="Reader\FilterData.cs" />
     <Compile Include="Reader\XlsxReader.cs" />
+    <Compile Include="RegressionAnalysis\FilterPair.cs" />
+    <Compile Include="RegressionAnalysis\RegressionPairs.cs" />
     <EmbeddedResource Include="Form.resx">
       <DependentUpon>Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -94,8 +97,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parser\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

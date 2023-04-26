@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Windows;
 using System.Linq;
 using Aspose.Cells;
 using PairwiseRegressionAnalysis.Reader;
-using MathNet.Numerics.Statistics;
+using PairwiseRegressionAnalysis.RegressionAnalysis;
+using System.Windows.Forms;
 
 namespace PairwiseRegressionAnalysis
 {
@@ -21,20 +22,14 @@ namespace PairwiseRegressionAnalysis
             chart_regression.Series["SeriesCorrelationField"].LegendText = "Поле корреляции";
             foreach (var point in points)
             {
-                chart_regression.Series["SeriesCorrelationField"].Points.AddXY(point);
+                chart_regression.Series["SeriesCorrelationField"].Points.AddXY(point.X,point.Y);
             }
         }
 
 
-        private static double? ObjectToDouble(object element)
-        {
-            double value;
-            if (element == null) return null;
-            else if (Double.TryParse(element.ToString(), out value)) return value;
-            throw new Exception("Cannot implicitly convert type 'object' to 'double?'");
-        }
 
-        private Dictionary<string, List<double?>> district_data = new Dictionary<string, List<double?>>();
+
+        private Dictionary<string, List<string>> district_data = new Dictionary<string, List<string>>();
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -42,27 +37,8 @@ namespace PairwiseRegressionAnalysis
             WorksheetCollection collection = wb.Worksheets;
             Worksheet worksheet = collection[0];
             XlsxReader xlsxReader = new XlsxReader(worksheet.Cells);
-            var data = FilterData.EmptyDatatoNullable(xlsxReader.GetColumnValues());
-            data.Remove(data.First().Key);
-            foreach (var keyValue in data)
-            {
-                try
-                {
-                    var value = keyValue.Value.ConvertAll(ObjectToDouble);
-                    /*
-                    value.RemoveAll(element => {
-                        double standard_deviation = Statistics.PopulationStandardDeviation(value);
-                        double mean = Statistics.Mean(value);
-                        return element < mean - 3 * standard_deviation || element > mean + 3 * standard_deviation;
-                    });
-                    */
-                    district_data.Add(keyValue.Key, value);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+            district_data = FilterData.EmptyDatatoNullable(xlsxReader.GetColumnValues());
+            district_data.Remove(district_data.First().Key); //delete column with district name
             comboBoxX.Items.AddRange(district_data.Keys.ToArray());
             comboBoxY.Items.AddRange(district_data.Keys.ToArray());
         }
@@ -84,7 +60,18 @@ namespace PairwiseRegressionAnalysis
 
         private void buttonPlot_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                var first_elements_pair = district_data[comboBoxX.SelectedItem.ToString()];
+                var second_elements_pair = district_data[(comboBoxY.SelectedItem.ToString())];
+                var regression_point = new RegressionPairs(first_elements_pair, second_elements_pair);
+                var regression_pairs = FilterPair.DeleteAnomalPairs(regression_point.regression_pairs);
+                DrawCorrelationField(regression_pairs);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 
