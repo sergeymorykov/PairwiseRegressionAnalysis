@@ -5,7 +5,6 @@ using System.Linq;
 using Aspose.Cells;
 using PairwiseRegressionAnalysis.Reader;
 using PairwiseRegressionAnalysis.RegressionAnalysis;
-using System.Windows.Forms;
 
 namespace PairwiseRegressionAnalysis
 {
@@ -15,19 +14,6 @@ namespace PairwiseRegressionAnalysis
         {
             InitializeComponent();
         }
-
-        private void DrawCorrelationField(List<Point> points)
-        {
-            chart_regression.Series["SeriesCorrelationField"].Points.Clear();
-            chart_regression.Series["SeriesCorrelationField"].LegendText = "Поле корреляции";
-            foreach (var point in points)
-            {
-                chart_regression.Series["SeriesCorrelationField"].Points.AddXY(point.X,point.Y);
-            }
-        }
-
-
-
 
         private Dictionary<string, List<string>> district_data = new Dictionary<string, List<string>>();
 
@@ -63,8 +49,22 @@ namespace PairwiseRegressionAnalysis
             var first_elements_pair = district_data[comboBoxX.SelectedItem.ToString()];
             var second_elements_pair = district_data[comboBoxY.SelectedItem.ToString()];
             var regression_point = new RegressionPairs(first_elements_pair, second_elements_pair);
-            var regression_pairs = FilterPair.DeleteAnomalPairs(regression_point.regression_pairs);
+            var regression_pairs = regression_point.regression_pairs;
+            for (int i = 0; i < 3; i++)
+            {
+                regression_pairs = FilterPair.DeleteAbnormalPairs(regression_pairs);
+            }
             DrawCorrelationField(regression_pairs);
+        }
+
+        private void DrawCorrelationField(List<Point> points)
+        {
+            chart_regression.Series["SeriesCorrelationField"].Points.Clear();
+            chart_regression.Series["SeriesCorrelationField"].LegendText = "Поле корреляции";
+            foreach (var point in points)
+            {
+                chart_regression.Series["SeriesCorrelationField"].Points.AddXY(point.X, point.Y);
+            }
         }
     }
 
