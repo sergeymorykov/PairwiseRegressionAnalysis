@@ -35,6 +35,25 @@ namespace PairwiseRegressionAnalysis.Reader
             return result;
         }
 
+        public override List<string> GetTitlesColumn() 
+        {
+            var result = new List<string>();
+
+            int last_row_index = 0;
+            int column_amount = cells.MaxDataColumn;
+            for (int column_index = 0; column_index <= column_amount; column_index++)
+            {
+                int row_index = GetColumn(column_index).FindIndex((element) => element != null);
+                if (last_row_index < row_index) last_row_index = row_index;
+            }
+            for (int column_index = 0; column_index <= column_amount; column_index++)
+            {
+                int row_index = GetColumn(column_index).GetRange(0, last_row_index + 1).FindLastIndex((element) => element != null);
+                result.Add(cells[row_index, column_index].Value.ToString());
+            }
+
+            return result;
+        }
         public override List<string> GetTitlesColumn(out int last_row_index) 
         {
             var result = new List<string>();

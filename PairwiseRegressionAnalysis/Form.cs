@@ -5,6 +5,9 @@ using System.Linq;
 using Aspose.Cells;
 using PairwiseRegressionAnalysis.Reader;
 using PairwiseRegressionAnalysis.RegressionAnalysis;
+using MathNet.Numerics;
+using System.Security;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PairwiseRegressionAnalysis
 {
@@ -49,13 +52,30 @@ namespace PairwiseRegressionAnalysis
             var first_elements_pair = district_data[comboBoxX.SelectedItem.ToString()];
             var second_elements_pair = district_data[comboBoxY.SelectedItem.ToString()];
             var regression_point = new RegressionPairs(first_elements_pair, second_elements_pair);
-            var regression_pairs = regression_point.regression_pairs;
-            for (int i = 0; i < 3; i++)
+
+            var regression_pairs = regression_point.DeleteAbnormalPairs();
+            for (int i = 0; i < 2; i++)
             {
-                regression_pairs = FilterPair.DeleteAbnormalPairs(regression_pairs);
+                regression_pairs = regression_point.DeleteAbnormalPairs();
             }
             DrawCorrelationField(regression_pairs);
+
+            var correlation_coefficient = StatisticsFunction.GetCorrelationCoefficient(regression_pairs);
+            labelCorrelationCoefficient.Text = Math.Round(correlation_coefficient, 6).ToString();
+            var label_correlation_test_text = labelCorrelationTest.Text;
+            label_correlation_test_text = label_correlation_test_text.Remove(label_correlation_test_text.IndexOf('-') + 2);
+            label_correlation_test_text += СoefficientSignificanceTest(regression_pairs) ? "значим" : "не значим";
+            labelCorrelationTest.Text = label_correlation_test_text;
         }
+
+        public static bool СoefficientSignificanceTest(List<Point> regression_pairs) 
+        {
+            var analytical_student_criterion_value = StatisticsFunction.GetAnalyticalStudentCriterion(regression_pairs);
+            int amount_pair = regression_pairs.Count;
+            var table_student_criterion_value = 1.99;//StatisticsFunction.GetTableStudentCriterion(amount_pair, 0.95);
+            return Math.Abs(analytical_student_criterion_value) > table_student_criterion_value;
+        } 
+
 
         private void DrawCorrelationField(List<Point> points)
         {

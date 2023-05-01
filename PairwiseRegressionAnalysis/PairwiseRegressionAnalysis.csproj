@@ -69,8 +69,9 @@
     <Compile Include="Reader\AbstractXlsxReader.cs" />
     <Compile Include="Reader\FilterData.cs" />
     <Compile Include="Reader\XlsxReader.cs" />
-    <Compile Include="RegressionAnalysis\FilterPair.cs" />
+    <Compile Include="RegressionAnalysis\AbstractRegressionPairs.cs" />
     <Compile Include="RegressionAnalysis\RegressionPairs.cs" />
+    <Compile Include="StatisticsFunction.cs" />
     <EmbeddedResource Include="Form.resx">
       <DependentUpon>Form.cs</DependentUpon>
     </EmbeddedResource>
