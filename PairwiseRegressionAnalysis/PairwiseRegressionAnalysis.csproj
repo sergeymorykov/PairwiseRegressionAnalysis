@@ -69,6 +69,7 @@
     <Compile Include="Reader\AbstractXlsxReader.cs" />
     <Compile Include="Reader\FilterData.cs" />
     <Compile Include="Reader\XlsxReader.cs" />
+    <Compile Include="RegressionAnalysis\RegressionEquation.cs" />
     <Compile Include="RegressionAnalysis\AbstractRegressionPairs.cs" />
     <Compile Include="RegressionAnalysis\RegressionPairs.cs" />
     <Compile Include="StatisticsFunction.cs" />
