@@ -60,19 +60,10 @@ namespace PairwiseRegressionAnalysis
             }
             DrawCorrelationField(regression_pairs);
 
-            var correlation_coefficient = StatisticsFunction.GetCorrelationCoefficient(regression_pairs);
-            labelCorrelationCoefficient.Text = Math.Round(correlation_coefficient, 6).ToString();
-            var label_correlation_test_text = labelCorrelationTest.Text;
-            label_correlation_test_text = label_correlation_test_text.Remove(label_correlation_test_text.IndexOf('-') + 2);
-            label_correlation_test_text += СoefficientSignificanceTest(regression_pairs) ? "значим" : "не значим";
-            labelCorrelationTest.Text = label_correlation_test_text;
-
             (double a, double b) = RegressionEquation.LinearRegressionCoefficients(regression_pairs);
             labelRegrassionEquation.Text = $"y = {Math.Round(a,3)} + {Math.Round(b,3)}x";
 
-            DrawRegressionEquation(regression_pairs, x => a + b * x, "линейная регрессия");
-
-            labelRegressionError.Text = Math.Round(StatisticsFunction.GetRegressionError(regression_pairs, x => a + b * x), 6).ToString();
+            DrawRegressionEquation(regression_pairs, x => a + b * x, "линейная регрессия");        
 
         }
 
