@@ -23,6 +23,11 @@ namespace PairwiseRegressionAnalysis
             return correlation_coefficient * Math.Sqrt((amount_pair-2)/(1-Math.Pow(correlation_coefficient,2)));
         }
 
+        public static double GetApproximationError(List<Point> pairs, Func<double, double> regression_func) 
+        {
+            return pairs.Sum(pair => Math.Abs((pair.Y - regression_func(pair.X)) / pair.Y)) / pairs.Count * 100;
+        }
+
         public static double GetRegressionError(List<Point> pairs, Func<double, double> regression_func) 
         {
             double difference_sum = pairs.Sum(pair => Math.Pow(pair.Y - regression_func(pair.X), 2));
@@ -31,9 +36,8 @@ namespace PairwiseRegressionAnalysis
 
         public static double GetDispersionX(List<Point> pairs)
         {
-            double sum = pairs.Sum(pair => pair.X);
-            double sum_of_squares = pairs.Sum(pair => pair.X*pair.X);
-            return sum_of_squares - Math.Pow(sum, 2);
+            double avg_of_squares = pairs.Average(pair => pair.X);
+            return pairs.Average(pair => Math.Pow(pair.X - avg_of_squares,2));
         }
 
         public static double GetStandartDeviationA(List<Point> pairs, Func<double, double> regression_func) 
@@ -42,14 +46,14 @@ namespace PairwiseRegressionAnalysis
             double dispersionX = GetDispersionX(pairs);
             double sum_of_squares = pairs.Sum(pair => pair.X * pair.X);
             double pair_amount = pairs.Count;
-            return regression_error * Math.Sqrt(sum_of_squares) / (pair_amount * dispersionX);
+            return regression_error * Math.Sqrt(sum_of_squares) / (pair_amount * Math.Sqrt(dispersionX));
         }
         public static double GetStandartDeviationB(List<Point> pairs, Func<double, double> regression_func)
         {
             double regression_error = GetRegressionError(pairs, regression_func);
             double dispersionX = GetDispersionX(pairs);
             double pair_amount = pairs.Count;
-            return regression_error / (Math.Sqrt(pair_amount) * dispersionX);
+            return regression_error / (Math.Sqrt(pair_amount) * Math.Sqrt(dispersionX));
         }
 
         public static double GetAnalyticalStudentCriterionA(List<Point> pairs, Func<double, double> regression_func, double a)

@@ -36,9 +36,6 @@ namespace PairwiseRegressionAnalysis.RegressionAnalysis
             regression_pairs.RemoveAll(pair => anomal_regression_pairs.Contains(pair));
 
             return regression_pairs;
-        }
-        
-
-
+        }        
     }
 }
